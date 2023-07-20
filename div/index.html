@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Your division prediction for the next semester">
+        <title>Division Prediction</title>
+        <link rel="stylesheet" type="text/css" href="/styles.css">
+        <meta name="theme-color" content="#000000" />
+    </head>
+    <body>
+        <div class="fluid">
+            <p class="heading">Your next semester division predictions</p>
+            <div class="info">
+                Assuming 44 studs in D1 and 45 in others<br><br>
+            </div>
+            <table class="styled-table" id="division-table">
+                <thead>
+                  <tr>
+                    <th>Roll No.</th>
+                    <th>Div</th>
+                    <th>Name</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="csv-data"></tbody>
+              </table>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+        <script src="/scripts/div.js"></script>
+    </body>
+</html>

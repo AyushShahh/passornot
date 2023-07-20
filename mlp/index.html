@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="How I trained the neural network for predicting your final exam results">
+  <title>Multilayer Perceptron</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <meta name="theme-color" content="#000000" />
+</head>
+<body>
+    <div class="fluid">
+        <p class="heading">How is this neural network trained?</p>
+        <div class="info">
+            I used Python to make a <a href="https://en.wikipedia.org/wiki/Multilayer_perceptron" target="_blank">Multilayer Perceptron (MLP)</a>, which is a type of <a href="https://en.wikipedia.org/wiki/Artificial_neural_network" target="_blank">Artificial Neural Network (ANN)</a>. It is widely used in Machine Learning and regression tasks. My neural network had an input layer with 4 nodes, output layer with one node and two hidden layers with 5 and 4 nodes. The <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)" target="_blank">Rectified Linear Unit (ReLU)</a> (top right in image) <a href="https://en.wikipedia.org/wiki/Activation_function" target="_blank">activation function</a> was used with hidden layers and <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent" target="_blank">Stochastic Gradient Descent (SGD)</a> as an optimizer (solver) to train the neural network. It took me less than two weeks to make this and website I guess a day or two.<br>
+            <img src="/assets/nn.png"><br><br>
+            <div class="point">
+                There are mainly 2 steps in training a neural network:<br>
+            </div>
+            <div class="point">
+                1) Data preparation and segregating the data into training data and data used to predict the outcome.<br>
+            </div>
+            2) Decide the model architecture. What activation function to use, what optimizer to use, number of hidden layers and nodes in each hidden layer. This is the most important part and it decides how good your model will be.<br><br>
+            Data preparation is the most frustrating part. Though I didn't type the data manually, I used python to make and manage data, still it was pain in the...<br><br><br>
+            <div class="point">
+                I had decided to train the neural network on four variables:<br>
+            </div>
+            <div class="point">
+                <u>Sem 1 MSE-1 marks</u><br>
+                I multiplied the marks by 0.45 as they have less syllabus covered and doesn't truely indicate a student's performance in the final exam.<br>
+            </div>
+            <div class="point">
+                <u>Sem 1 MSE-2 marks</u><br>
+                I multiplied the marks by 0.8 as they cover almost whole syllabus so I thought they matter more.<br>
+            </div>
+            <div class="point">
+                <u>Subject difficulty on a scale of 1-5</u><br>
+                All subjects have their own difficulty so it also plays a role.<br>
+            </div>
+            <u>Student rating sem 1</u><br>
+            I thought of giving a rating to each student so as to get an idea about how well they can perform in exams. Roll number 1 gets a 1000 rating and with each roll number, it decreases by 5. If a student having good roll number gets a very low roll number in next sem, it implies a drop in potential and vice versa. And yeah as I said before, I didn't do this manually, just plugged in this simple formula in python:<br>1000 - (r - 1) * 5<br><br><br>
+
+            <div class="point">
+                The sem 1 final exam marks were estimated using these steps:<br>
+            </div>
+            <div class="point">
+                1) Get the grades of each student. This had to be done manually, thanks to the people who helped me getting and sorting everyone's grades. And then get the sem 1 internal marks of each student (done automatically).<br>
+            </div>
+            <div class="point">
+                For the final grade, the internal and final exam marks are summed. Then the result is mapped to this range:
+            </div>
+            <div class="point">
+                85 - 100: AA, &nbsp; 75 - 84: AB, &nbsp; 65 - 74: BB<br>55 - 64: BC, &nbsp; 45 - 54: CC, &nbsp; 40 - 44: CD<br>35 - 39: DD, &nbsp; 0 - 34: FF<br><br>
+            </div>
+            <div class="point">
+                2) Following similar pattern, subtract internal marks from 85 and based on their grade, find the range of their marks. The final score is kept as the ceil of midpoint of their range of marks.
+            </div>
+            For example if internals are 29 and grade is AB then 85 - 29 = 56 and AB implies their marks lie in the range 46 - 55 and midpoint of the range is 50.5 so 51 marks in final exam of that subject.<br><br><br>
+            So while training, the neural network was fed in those 4 variables and the final result as output. With each iteration, the neural network adjusts its <a href="https://towardsdatascience.com/whats-the-role-of-weights-and-bias-in-a-neural-network-4cf7e9888a0f" target="_blank">weights and bias</a> and it gets better at prediction. Neural network sees the input data and the output it resulted in and learns the relationship between them. It basically creates a function in y (output) and x (input) and it improves with each iteration. The more data you have and the more iterations it goes through, the better the model gets. All the values of the variables were scaled using StandardScaler before training as they all are in different ranges.<br><br>
+            Its a common practice to plot the data of your models which helps you understand it (I used <a href="https://en.wikipedia.org/wiki/Matplotlib" target="_blank">Matplotlib</a>). Although there is no way to visualize this as there are four variables and plotting in 4 dimensions isn't possible in our universe, one way (only way) is to plot a different scatterplot for each variable but as I'm lazy I plotted graphs for all students vs the variables and finals score for both semesters which gives you a pretty much idea about this. Ik it looks like a mess but it is what it is.
+            <img src="/assets/Figure_1.png"><br><br>
+            After I trained the model, I passed the sem 2 data (same 4 variables but of sem 2) and the model predicted the final score of each subject for each student. Your sem 2 internals were calculated by summing both mse marks and diving it by 4. If the result is greater than or equal to 12, 4 marks will be added to it. Then I got your sem 2 attendance and calculated your bonus marks by unitary method. If you were absent in any lecture in the first 4 days then it will be counted out of 12, otherwise 16. This was also not done manually. Then I distributed the bonus marks to those internals as per the need.<br><br>
+            The internals and predicted final exam scores were summed up and the grade was calculated the same way I had described above. With grade, you can get points out of 10 for that subject. Then multiply the grade points of the subjects with their respective credits, sum them up and divide the result by the sum of all credit points which will give your spi. Majority of things were done through code as it makes things easier and automated.<br><br>
+            ~ Ayush
+        </div>
+    </div>
+</body>
+</html>
