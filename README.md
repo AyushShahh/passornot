@@ -1,5 +1,5 @@
 # passornot
-Website for displaying the final exam predictions of the students using [this](https://github.com/AyushShahh/fespn) neural network.
+Website for displaying the final exam predictions of the students using [AyushShahh/fespn](https://github.com/AyushShahh/fespn) neural network.
 
 Papa.parse library has been used to read and display data from csv.
 
